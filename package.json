@@ -1,0 +1,26 @@
+{
+  "name": "wallet.app",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "bip39": "^3.1.0",
+    "ethers": "^6.10.0",
+    "hdkey": "^2.1.0",
+    "vue": "^3.3.11",
+    "web3": "^4.4.0"
+  },
+  "devDependencies": {
+    "@types/bip39": "^3.0.0",
+    "@types/hdkey": "^2.0.3",
+    "@vitejs/plugin-vue": "^4.5.2",
+    "typescript": "^5.2.2",
+    "vite": "^5.0.8",
+    "vue-tsc": "^1.8.25"
+  }
+}
