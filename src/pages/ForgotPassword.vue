@@ -42,7 +42,7 @@ const onUnlock = () => {
     <button type="button" @click="onUnlock" :disabled="!(phrase && password && confirmPassword && password === confirmPassword)" >
       Restore
     </button>
-  
+    <router-link to="/create-wallet">Create a wallet</router-link>
   </div>
   </div>
 </template>

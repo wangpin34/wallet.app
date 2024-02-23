@@ -42,6 +42,7 @@ const onUnlock = () => {
       Unlock
     </button>
     <router-link to="/forgot-password">Forgot Password?</router-link>
+    <router-link to="/create-wallet">Create a Wallet</router-link>
   </div>
   </div>
 </template>
