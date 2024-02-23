@@ -36,10 +36,11 @@ const onUnlock = () => {
     <input type="password" v-model="password" />
     <label for="confirmPassword">Confirm Password</label>
     <input type="password" v-model="confirmPassword" />
+    <span v-if="confirmPassword !== password" class="text-rose-700">Password don't match</span>
   </div>
   <div>
     <button type="button" @click="onUnlock" :disabled="!(phrase && password && confirmPassword && password === confirmPassword)" >
-      unlock
+      Restore
     </button>
   
   </div>
