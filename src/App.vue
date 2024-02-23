@@ -1,12 +1,23 @@
 <script setup lang="ts">
-// import { HDNodeWallet, Wallet, ethers, parseEther } from 'ethers';
+import { ethers } from 'ethers';
 // import { onMounted, ref, watch } from 'vue';
-// import { Web3 } from 'web3';
+import { Web3 } from 'web3';
 // import { QingWallet, loadJsonWallet } from './utils/wallet';
-// const ganacheUrl = 'http://localhost:7545';
-// const httpProvider = new Web3.providers.HttpProvider(ganacheUrl);
-// const rpcProvider = new ethers.JsonRpcProvider(ganacheUrl)
-// const web3 = new Web3(httpProvider)
+const ganacheUrl = 'http://localhost:7545';
+const httpProvider = new Web3.providers.HttpProvider(ganacheUrl);
+const web3 = new Web3(httpProvider)
+
+const defaultProvider = {
+  provider: new ethers.JsonRpcProvider(ganacheUrl),
+  label: '7545',
+  isTestNetwork: true
+}
+
+window.web3 = {
+  web3,
+  provider: defaultProvider
+}
+
 // const phrase = ref<string>()
 // const payee = ref<string>()
 // const transactions = ref<Array<Transaction>>()

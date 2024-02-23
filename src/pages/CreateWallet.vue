@@ -1,17 +1,16 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { useBasicStore, useWalletStore, useProviderStore } from '../store/basic';
+import { useBasicStore, useWalletStore } from '../store/basic';
 import { QingWallet, saveJsonWallet } from '../utils/wallet';
 const router = useRouter()
 const basicStore = useBasicStore()
 const walletStore = useWalletStore()
-const providerStore = useProviderStore()
 const phrase = ref<string>()
 const password = ref<string>()
 const confirmPassword = ref<string>()
 const create = () => {
-  const wallet = QingWallet.createWallet(providerStore.provider.provider)
+  const wallet = QingWallet.createWallet(window.web3.provider.provider)
   phrase.value = wallet.mnemonic?.phrase
   console.log(wallet)
 }
