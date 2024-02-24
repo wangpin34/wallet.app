@@ -1,26 +1,24 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { useBasicStore, useWalletStore } from '../store/basic';
-import { QingWallet, saveJsonWallet } from '../utils/wallet';
+import { useBasicStore } from '../store/basic';
+import { saveJsonWallet, createWallet, importFromPhrase } from '../utils/wallet';
 const router = useRouter()
 const basicStore = useBasicStore()
-const walletStore = useWalletStore()
 const phrase = ref<string>()
 const password = ref<string>()
 const confirmPassword = ref<string>()
 const create = () => {
-  const wallet = QingWallet.createWallet(window.web3.provider.provider)
+  const wallet = createWallet()
   phrase.value = wallet.mnemonic?.phrase
-  console.log(wallet)
 }
 
 const onConfirm = () => {
   try {
-    const wallet = new QingWallet(QingWallet.importFromPhrase(phrase.value!))
-    saveJsonWallet(wallet.getWallet().encryptSync(password.value!))
+    const wallet = importFromPhrase(phrase.value!)
+    saveJsonWallet(wallet.encryptSync(password.value!))
+    window.web3.wallet = wallet
     basicStore.setIsLocked(false)
-    walletStore.setWallet(wallet)
     router.push('/')
   } catch (err) {
     basicStore.setIsLocked(true)

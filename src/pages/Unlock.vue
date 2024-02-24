@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useBasicStore, useWalletStore } from '../store/basic';
-import { QingWallet, loadJsonWallet } from '../utils/wallet';
+import { useBasicStore } from '../store/basic';
+import { loadJsonWallet, importFromEncryptedJson } from '../utils/wallet';
 const router = useRouter()
 const basicStore = useBasicStore()
-const walletStore = useWalletStore()
 const password = ref<string>()
 const onUnlock = () => {
   const walletJson = loadJsonWallet()
@@ -18,11 +17,9 @@ const onUnlock = () => {
     return
   }
   try {
-    const wallet = new QingWallet(
-      QingWallet.importFromEncryptedJson(walletJson!, password.value)
-    )
+    const wallet = importFromEncryptedJson(walletJson!, password.value)
     basicStore.setIsLocked(false)
-    walletStore.setWallet(wallet)
+    window.web3.wallet = wallet
     router.push('/')
   } catch (err) {
     basicStore.setIsLocked(true)

@@ -3,17 +3,18 @@
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { TransactionResponse } from 'ethers'
-import { useBasicStore, useWalletStore } from '../store/basic';
+import { useBasicStore } from '../store/basic';
+import { parseEther } from 'ethers'
 
 const web3 = window.web3.web3
+const wallet = window.web3.wallet
 const provider = window.web3.provider
 
 const router = useRouter()
 const basicStore = useBasicStore()
-const walletStore = useWalletStore()
 
 onMounted(async () => {
-  if (basicStore.isLocked || !walletStore.wallet) {
+  if (basicStore.isLocked || !wallet) {
     router.push('/unlock')
   }
 })
@@ -47,8 +48,8 @@ const weiToEth = (wei: bigint) => {
 }
 
 const refresh = async () => {
-  if (walletStore.wallet) {
-    const address = walletStore.wallet.getWallet().address
+  if (wallet) {
+    const address = wallet?.address
 
     const wei = await provider.provider.getBalance(address)
     const eth = weiToEth(wei)
@@ -67,21 +68,54 @@ const refresh = async () => {
 const onRefresh = () => {
   refresh()
 }
+
+// private key of receiptor
+const receiptor = ref<string>()
+const amount = ref<number>()
+const onSend = async () => {
+  if (wallet && amount.value !== undefined && amount.value > 0) {
+    try {
+
+      const walletConnected = wallet.connect(provider.provider)
+      const tx = {
+        to: receiptor.value,
+        value: parseEther(amount.value.toString()),
+      };
+      
+      const transaction = await walletConnected.sendTransaction(tx);
+      // Wait for the transaction to be mined
+      const receipt = await transaction.wait();
+      console.log(`succeed`, transaction, receipt)
+      await refresh()
+    } catch (err) {
+      console.error(`failed to send token`, err)
+    }
+  } else {
+    alert('failed to send token because that either wallet is not ready, or amount is invalid')
+  }
+}
+
 onMounted(() => {
   refresh()
 })
 </script>
 <template>
   <div>
-    <p>address: {{ walletStore.wallet?.getWallet()?.address }}</p>
+    <p>address: {{ wallet?.address }}</p>
     <div>
       <button @click="onRefresh">refresh</button>
     </div>
     <p>
       balance: {{ balance }} ETH
-      <br/>
-      
     </p>
+    <div class="flex flex-col gap-2">
+      <h1>Send</h1>
+      <label for="account">Send to</label>
+      <input type="text" name="receiptor" placeholder="private key" v-model="receiptor"/>
+      <label for="amount">Amount</label>
+      <input type="number" name="amount" placeholder="input amount of EHT to send" v-model="amount"/>
+      <button @click="onSend">Send</button>
+    </div>
     <div>
       transaction count: {{ txCount }}
       <hr/>
