@@ -35,7 +35,7 @@ const onUnlock = () => {
   <div class="flex flex-col items-center gap-4">
   <div class="flex flex-col">
     <label for="password">Password</label>
-    <input type="text" v-model="password" class="w-36"/>
+    <input type="password" v-model="password" class="w-36"/>
   </div>
   <div class="w-full flex flex-col items-center gap-2">
     <button type="button" @click="onUnlock" :disabled="!password" class="w-min">
