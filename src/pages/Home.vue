@@ -22,6 +22,14 @@ const balance = ref<string>()
 const txCount = ref<number>()
 const transactions = ref<TransactionResponse[]>([] as TransactionResponse[])
 
+/*
+  you cannot use the Etherscan API with Ganache. Etherscan is a block explorer for the live Ethereum network and it does not have access to your local Ganache network.
+
+  Ganache is a personal blockchain for Ethereum development you can use to deploy contracts, develop applications, and run tests. It is available as both a desktop application as well as a command-line tool.
+
+  To get the transactions from Ganache, you can use the web3.js or ethers.js libraries. However, please note that Ganache does not support the txpool APIs, so you cannot get pending transactions directly.
+ */
+
 const getTransactions = async () => {
   let blockNum = await provider.provider.getBlockNumber()
   const transactions: string[] = []
