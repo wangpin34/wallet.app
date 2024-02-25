@@ -15,6 +15,7 @@
     "ethers": "^6.10.0",
     "pinia": "^2.1.7",
     "unocss": "^0.58.5",
+    "vite-plugin-node-polyfills": "^0.21.0",
     "vite-tsconfig-paths": "^4.3.1",
     "vue": "^3.3.11",
     "vue-router": "4",
