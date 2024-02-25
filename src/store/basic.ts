@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-import { QingWallet } from 'utils/wallet'
 
 export const useBasicStore = defineStore('basic', {
   state: () => ({
@@ -8,17 +7,6 @@ export const useBasicStore = defineStore('basic', {
   actions: {
     setIsLocked(isLocked: boolean) {
       this.isLocked = isLocked
-    },
-  },
-})
-
-export const useWalletStore = defineStore('wallet', {
-  state: () => {
-    return { wallet: null as QingWallet | null }
-  },
-  actions: {
-    setWallet(wallet: QingWallet | null) {
-      this.wallet = wallet
     },
   },
 })
