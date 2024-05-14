@@ -1,9 +1,4 @@
-import {
-  HDNodeWallet,
-  Mnemonic,
-  Provider,
-  ethers,
-} from 'ethers'
+import { HDNodeWallet, Mnemonic, Provider, ethers } from 'ethers'
 
 const STORAGE_KEY = 'wallet'
 
@@ -15,13 +10,20 @@ export function saveJsonWallet(json: string) {
   return localStorage.setItem(STORAGE_KEY, json)
 }
 
-export function importFromPhrase(phrase: string) {
+export function importFromPhrase(phrase: string, path?: string) {
   const mnemonic = Mnemonic.fromPhrase(phrase)
-  const wallet = HDNodeWallet.fromMnemonic(mnemonic)
+  const wallet = HDNodeWallet.fromMnemonic(mnemonic, path)
   return wallet
 }
 
-export function importFromEncryptedJson(json: string, password: string | Uint8Array) {
+export function importFromMnemonic(mnemonic: Mnemonic, path?: string) {
+  return HDNodeWallet.fromMnemonic(mnemonic, path)
+}
+
+export function importFromEncryptedJson(
+  json: string,
+  password: string | Uint8Array
+) {
   return ethers.Wallet.fromEncryptedJsonSync(json, password) as HDNodeWallet
 }
 
