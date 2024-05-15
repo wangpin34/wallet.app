@@ -1,10 +1,9 @@
 
 <script setup lang="ts">
+import { TransactionResponse, parseEther } from 'ethers';
 import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { TransactionResponse } from 'ethers'
 import { useBasicStore } from '../store/basic';
-import { parseEther } from 'ethers'
 
 const web3 = window.web3.web3
 const wallet = window.web3.wallet
@@ -49,19 +48,16 @@ const weiToEth = (wei: bigint) => {
 
 const refresh = async () => {
   if (wallet) {
-    const address = wallet?.address
+    const address = wallet.address
 
     const wei = await provider.provider.getBalance(address)
     const eth = weiToEth(wei)
-    console.debug(`balance: ${eth}`)
     balance.value = eth
 
     const count = await provider.provider.getTransactionCount(address)
-    console.debug(`tx count:${count}`)
     txCount.value = count
 
     const txs = await getTransactions()
-    console.debug(`transactions: `, txs)
     transactions.value = txs.filter(t => !!t) as TransactionResponse[]
   }
 }
@@ -77,6 +73,7 @@ const onSend = async () => {
     try {
 
       const walletConnected = wallet.connect(provider.provider)
+    
       const tx = {
         to: receiptor.value,
         value: parseEther(amount.value.toString()),
@@ -101,7 +98,11 @@ onMounted(() => {
 </script>
 <template>
   <div>
-    <p>address: {{ wallet?.address }}</p>
+    <p>
+    address: {{ wallet?.address }}
+    <br/>
+    hd path: {{ wallet?.path }}
+    </p>
     <div>
       <button @click="onRefresh">refresh</button>
     </div>

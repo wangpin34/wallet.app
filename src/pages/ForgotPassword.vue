@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useBasicStore } from '../store/basic';
-import { saveJsonWallet, importFromPhrase } from '../utils/wallet';
+import { importFromPhrase, saveJsonWallet } from '../utils/wallet';
 const router = useRouter()
 const basicStore = useBasicStore()
 const phrase = ref<string>()
@@ -14,7 +14,7 @@ const onUnlock = () => {
     return
   }
   try {
-    const wallet = importFromPhrase(phrase.value)
+    const wallet = importFromPhrase(phrase.value, "m/44'/60'/0'/0/0")
     saveJsonWallet(wallet.encryptSync(password.value!))
     window.web3.wallet = wallet
     basicStore.setIsLocked(false)
